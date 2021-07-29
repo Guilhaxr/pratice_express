@@ -114,10 +114,15 @@ const items = [
 
 
 app.get('/resources', (request, response)=> {
+    // console.log(request.query.currency) last quest
+    const currency = request.query.currency
+    const filteredItemsByCurrency = currency ? items.filter((item)=> item.currency === currency) : items // It will filter all currency to show eur or usd, in this case I need put this variable into the variable in the response.send. After that I create a condition, if currency is true it'll show it, else will show the items.
     // console.log(request.query)
     // response.send(items)
+    const limit = request.query.limit ? request.query.limit : 10 // if the query.limit is true it will show him, else will show 10 ( in /resources) 3quest
+    // response.send(items.splice(0, limit)) // splice will cut an array array.splice(index, howmany) 3 quest
 
-const limit = request.query.limit ? request.query.limit : 10
+    response.send(filteredItemsByCurrency.splice(0, limit)) // last quest// it's filtering the currency with the limit I ordered
 
 
 })
@@ -126,6 +131,7 @@ app.get('/resources/:id', (request, response)=>{
     const parsedId = parseInt(request.params.id)
     const selectedItem = items.find((item)=> parsedId === item.id);
     response.send(selectedItem ? selectedItem : {message: 'This item does not exist'} )
+    console.log(request.params.id)
 })
 
 
